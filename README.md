@@ -2,6 +2,7 @@
 UOL group project
 
 Project Idea: A.I. Workout Application
+
 Why is it unique?
 The application instead of listening to songs which could very inconveniently end just when you need a final push during your run, would instead be generated based on both the users current heartbeat and gait using AI.
 Crowded marketplace.
