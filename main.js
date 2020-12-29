@@ -36,6 +36,7 @@ function SetHeartRate() {
 }
 
 function Bpm() {
+    //x allows us to create a case that isn't a single integer but rather a comparison between numbers.
     var x = heartRate;
     switch (true) {
         case (x >= 50 && x <= 75):
