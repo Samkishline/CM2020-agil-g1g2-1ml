@@ -13,5 +13,6 @@ Is it really unique?
 Though I’ve heard of AI generated music like Jukebox.ai, i’ve never heard of this technology being coupled with heartbeat/gait to generate music BPM based on your current running speed/workout level.
 
 ----
+Part of Q#4 for midterm - 
 
 Our workout application will take the current heart rate of a user and plug in to a library which generates music in real-time and puts out music based on the aforementioned heart rate. Depending on the battery life of the device that is reading the users heart rate we can only poll the users heart rate so often, this will impact how often we update the BPM function within the application. Read-rate will need to be tested with users. How quickly the song updates from the Melody Mixer library could greatly impact how well the application is received by users. An application which updates the songs too quickly could create a poor experience for users as they don’t have enough time to enjoy the current song. Likewise, an application which updates songs too slowly could also negatively affect a users experience by simply not giving the user the experience which the application was created for, dynamic music. Music updated too slowly will simply recreate the experience which a user can find within any other music application. 
