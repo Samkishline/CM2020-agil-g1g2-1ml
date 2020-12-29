@@ -42,6 +42,9 @@ https://s.surveyplanet.com/1GcsjHkaL
 Github (here)
 https://github.com/Samkishline/CM2020-agil-g1g2-1ml.git
 
+Midterm info
+https://londoncs.slack.com/files/UHN4EES92/F01GW533D7Z/agile_uol_midterm.pdf?origin_team=TDT1N1BUG&origin_channel=G01DV9WDHB4
+
 ----
 
 Tools & Links:
