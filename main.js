@@ -30,73 +30,54 @@ function draw() {
 
 }
 
-function MapHeartRates(heartRate) {
-    //Map function
-    //map(value, start1, stop1, start2, stop2, [withinBounds])
-    //What we're doing here is mapping the heart rate to a case# within the Bpm function
-    //This whole function should be optimized to be within the switch function Bpm()
-
-    if (heartRate < 50) {
-        //throw error or preliminary song
-
-    } else if (heartRate >= 50 && heartRate <= 75) {
-
-        currentSongBPM = map(heartRate, 50, 75, 1, 1);
-    } else if (heartRate >= 76 && heartRate <= 85) {
-
-        currentSongBPM = map(heartRate, 76, 85, 2, 2);
-    }
-
-}
-
-
-
-
-
-}
-
 function SetHeartRate() {
 
     //function to set heartrate to 1-10 based on switch statement
 }
 
 function Bpm() {
-
-    switch (currentSongBMP) {
-        case 1:
+    var x = heartRate;
+    switch (true) {
+        case (x >= 50 && x <= 75):
             //HR - 50-75
 
             break;
-        case 2:
+        case (x >= 76 && x <= 85):
             //HR - 76-85
+
             break;
-        case 3:
+        case (x >= 86 && x <= 95):
             //HR - 86-95
+
             break;
-        case 4:
+        case (x >= 96 && x <= 100):
             //HR - 96-100
+
             break;
-        case 5:
+        case (x >= 101 && x <= 105):
             //HR - 101-105
             break;
-        case 6:
+        case (x >= 106 && x <= 110):
             //HR - 106-110
             break;
-        case 7:
+        case (x >= 111 && x <= 120):
             //HR - 111-120
             break;
-        case 8:
+        case (x >= 121 && x <= 150):
             //HR - 121-150
             break;
-        case 9:
+        case (x >= 151 && x <= 175):
             //HR - 151-175
             break;
-        case 10:
+        case (x >= 176 && x <= 200):
             //HR - 176-200+
             break;
-        case 99:
+        case (x > 200):
+            //HR - 200+
             //Out of range below or above - let's play something based on last heart rate or an intro song
+            break;
         default:
+            break;
     }
 
 }
