@@ -13,7 +13,7 @@ Is it really unique?
 Though I’ve heard of AI generated music like Jukebox.ai, i’ve never heard of this technology being coupled with heartbeat/gait to generate music BPM based on your current running speed/workout level.
 
 ----
-Agile Software Projects Midterm Assessment
+**Agile Software Projects Midterm Assessment**
 
 
 The Project Introduction to our project? Name for the app?
