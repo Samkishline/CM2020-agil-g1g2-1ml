@@ -10,10 +10,10 @@ let heartRate = 75;
 
 //Initial model initializations
 // Instantiate the model by specifying the desired checkpoint.
-const model = new mm.MusicVAE(
-    'https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/trio_4bar');
+//const model = new mm.MusicVAE(
+    //'https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/trio_4bar');
 
-const player = new mm.Player();
+//const player = new mm.Player();
 
 let stopSignal = false;
 let count = 0;
@@ -26,6 +26,26 @@ let phoneBottom = 946;
 let phoneLeft = 279 + 12.5;
 let phoneRight = 693 + 12.5;
 let phoneMiddle = ((phoneLeft+phoneRight)/2);
+
+DRUMS = {
+    notes: [
+      {pitch: 60, startTime: 0.0, endTime: 0.5},
+      {pitch: 60, startTime: 0.5, endTime: 1.0},
+      {pitch: 67, startTime: 1.0, endTime: 1.5},
+      {pitch: 67, startTime: 1.5, endTime: 2.0},
+      {pitch: 69, startTime: 2.0, endTime: 2.5},
+      {pitch: 69, startTime: 2.5, endTime: 3.0},
+      {pitch: 67, startTime: 3.0, endTime: 4.0},
+      {pitch: 65, startTime: 4.0, endTime: 4.5},
+      {pitch: 65, startTime: 4.5, endTime: 5.0},
+      {pitch: 64, startTime: 5.0, endTime: 5.5},
+      {pitch: 64, startTime: 5.5, endTime: 6.0},
+      {pitch: 62, startTime: 6.0, endTime: 6.5},
+      {pitch: 62, startTime: 6.5, endTime: 7.0},
+      {pitch: 60, startTime: 7.0, endTime: 8.0},  
+    ],
+    totalTime: 8
+  };
 
 //Test player
 
@@ -65,7 +85,7 @@ model.initialize().then(stop);
 function preload() {
     //preload
     img = loadImage('Assets/iPhone-Application-Img.png'); // Load the image
-
+    player = new mm.Player();
 
 }
 
@@ -88,7 +108,9 @@ function setup() {
 }
 
 function startMusic() {
-    start();
+    //start();
+
+    beginPlay();
 }
 
 function stopMusic() {
@@ -99,6 +121,15 @@ function windowResized() {
     resizeCanvas(windowWidth-25, windowHeight-16);
 }
 
+function beginPlay() {
+    player.start(DRUMS);
+}
+
+//***TEST*** */
+
+
+
+  
 
 function draw() {
     //We need to take music data from the melody mixer library and play it within the canvas
