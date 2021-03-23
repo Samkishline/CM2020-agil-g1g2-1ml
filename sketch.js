@@ -2,19 +2,81 @@
 //This class needs to take in a single number (heart rate) and turn it into a staggered case with a cooldown. This allows us to slowly change the song to a new song within a certain BPM range.
 
 //Our current song BPM, this decides the actual BPM for the song output which is derived from the heart rate.
-currentSongBPM = 0;
+let currentSongBPM = 0;
 //A variable to decide if it is time to change the song yet.
-isChangeable = TRUE;
+let isChangeable = true;
 //temporary heart rate since we don't have an input device.
-heartRate = 75;
+let heartRate = 75;
+
+//Initial model initializations
+// Instantiate the model by specifying the desired checkpoint.
+const model = new mm.MusicVAE(
+    'https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/trio_4bar');
+
+const player = new mm.Player();
+
+let stopSignal = false;
+let count = 0;
+let tempo = 80;
+
+//Test player
+
+const sampleAndPlayForever = () => {
+    player.stop();
+    count += 1;
+    //display counter
+    //document.getElementById('count').innerHTML = `${count} trios`;
+    return model.sample(1)
+        .then((samples) => player.start(samples[0], tempo))
+        .then(stopSignal ? undefined : sampleAndPlayForever)
+};
+
+const changeTempo = (delta) => {
+    tempo = Math.max(Math.min(tempo + delta * 10, 120), 40);
+    //display Tempo
+}
+
+const start = () => {
+    mm.Player.tone.context.resume(); // Required on mobile.
+    changeTempo(0);
+    stopSignal = false;
+    sampleAndPlayForever();
+};
+
+const stop = () => {
+    stopSignal = true;
+    player.stop();
+};
+
+model.initialize().then(stop);
+
 
 function preload() {
     //preload music
+
+
 }
 
 function setup() {
     //create a canvas for the robot
     createCanvas(windowWidth, windowHeight);
+
+    button = createButton('Start Music - (will take a second)');
+    button.position(windowWidth/2 - 30, 20);
+    button.mousePressed(startMusic);
+
+    button = createButton('Stop Music');
+    button.position(windowWidth/2 - 30, 50);
+    button.mousePressed(stopMusic);
+
+}
+
+function startMusic() {
+    start();
+}
+
+function stopMusic() {
+    stop();
 }
 
 function windowResized() {
@@ -25,9 +87,21 @@ function windowResized() {
 function draw() {
     //We need to take music data from the melody mixer library and play it within the canvas
 
+    //Test
+    background(220);
+
     //    run map function
     //    run Bpm function
 
+}
+
+function initializePlayer() {
+    const player = new core.Player();
+    //...
+    const mvae = new music_vae.MusicVAE('https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small');
+    mvae.initialize().then(() => {
+        mvae.sample(1).then((samples) => player.start(samples[0]));
+    });
 }
 
 function SetHeartRate() {
