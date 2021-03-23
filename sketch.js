@@ -19,7 +19,18 @@ let stopSignal = false;
 let count = 0;
 let tempo = 80;
 
+//Screen Size info for easy access (this is the bounds of the iphone 'screen')
+//hardcode + numbers because of scroll bar
+let phoneTop = 82;
+let phoneBottom = 946;
+let phoneLeft = 279 + 12.5;
+let phoneRight = 693 + 12.5;
+let phoneMiddle = ((phoneLeft+phoneRight)/2);
+
 //Test player
+
+//Initialize BG image so we can resize it upon window resize
+var img;
 
 const sampleAndPlayForever = () => {
     player.stop();
@@ -52,22 +63,27 @@ model.initialize().then(stop);
 
 
 function preload() {
-    //preload music
+    //preload
+    img = loadImage('Assets/iPhone-Application-Img.png'); // Load the image
 
 
 }
 
 function setup() {
     //create a canvas for the robot
-    createCanvas(windowWidth, windowHeight);
+    //hardcode - numbers to take away scroll bars
+    createCanvas(windowWidth-25, windowHeight-16);
 
     button = createButton('Start Music - (will take a second)');
-    button.position(windowWidth/2 - 30, 20);
+    button.position(phoneMiddle - button.width/2, phoneTop + 10);
     button.mousePressed(startMusic);
 
     button = createButton('Stop Music');
-    button.position(windowWidth/2 - 30, 50);
+    button.position(phoneMiddle - button.width/2, phoneTop + 50);
     button.mousePressed(stopMusic);
+    
+    img.resize(1000,1000);
+
 
 }
 
@@ -80,15 +96,19 @@ function stopMusic() {
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+    resizeCanvas(windowWidth-25, windowHeight-16);
 }
 
 
 function draw() {
     //We need to take music data from the melody mixer library and play it within the canvas
+    background(255);
 
-    //Test
-    background(220);
+    //Make image scale with width of screen
+
+
+        image(img, 0, 0)
+    
 
     //    run map function
     //    run Bpm function
