@@ -10,10 +10,10 @@ let heartRate = 75;
 
 //Initial model initializations
 // Instantiate the model by specifying the desired checkpoint.
-//const model = new mm.MusicVAE(
-    //'https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/trio_4bar');
+const model = new mm.MusicVAE(
+    'https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/trio_4bar');
 
-//const player = new mm.Player();
+const player = new mm.Player();
 
 let stopSignal = false;
 let count = 0;
@@ -85,7 +85,7 @@ model.initialize().then(stop);
 function preload() {
     //preload
     img = loadImage('Assets/iPhone-Application-Img.png'); // Load the image
-    player = new mm.Player();
+    //player = new mm.Player();
 
 }
 
@@ -103,14 +103,12 @@ function setup() {
     button.mousePressed(stopMusic);
     
     img.resize(1000,1000);
-
-
 }
 
 function startMusic() {
-    //start();
+    start();
 
-    beginPlay();
+    //beginPlay();
 }
 
 function stopMusic() {
