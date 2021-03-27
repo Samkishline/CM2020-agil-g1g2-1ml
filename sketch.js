@@ -4,9 +4,13 @@
 //Our current song BPM, this decides the actual BPM for the song output which is derived from the heart rate.
 let currentSongBPM = 0;
 //A variable to decide if it is time to change the song yet.
-let isChangeable = true;
+let isChangeable = false;
 //temporary heart rate since we don't have an input device.
 let heartRate = 75;
+
+//timer
+let startT;
+let deltaT;
 
 //Initial model initializations
 // Instantiate the model by specifying the desired checkpoint.
@@ -103,6 +107,12 @@ function setup() {
     button.mousePressed(stopMusic);
     
     img.resize(1000,1000);
+
+    //set start time
+
+    deltaT = random(1500, 5000);
+
+    startT=millis();
 }
 
 function startMusic() {
@@ -137,7 +147,12 @@ function draw() {
 
 
         image(img, 0, 0)
+
+        SetHeartRate();
     
+        if (isChangeable) {
+            //potentially change BPM
+        }
 
     //    run map function
     //    run Bpm function
@@ -156,6 +171,15 @@ function initializePlayer() {
 function SetHeartRate() {
 
     //function to set heartrate to 1-10 based on switch statement
+    if (millis() > startT + deltaT) {
+        startT = millis()
+        console.log("it is time for it now"); // do what you have to do!
+        isChangeable = true;
+
+        deltaT = random(1500, 5000);
+
+    }
+
 }
 
 function Bpm() {
