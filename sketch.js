@@ -412,6 +412,6 @@ function renderWave() {
     fill(0);
     // A simple way to draw the wave with an ellipse at each location
     for (let x = 0; x < yvalues.length; x++) {
-        ellipse(x * xspacing + phoneLeft - 3, height / 2 + yvalues[x], 16, 16);
+        ellipse(x * xspacing + phoneLeft - 3, (phoneBottom / 2 + 140)+ yvalues[x], 16, 16);
     }
 }
