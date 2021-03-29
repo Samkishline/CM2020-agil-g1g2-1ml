@@ -108,12 +108,7 @@ function setup() {
     //hardcode - numbers to take away scroll bars
     createCanvas(windowWidth - 25, windowHeight - 16);
 
-
-
-    //img.resize(1000,1000);
-
     //set start time
-
     deltaT = random(1500, 5000);
     //set Load timer
     deltaTLoad = 2000;
@@ -139,8 +134,6 @@ function setup() {
 
 function startMusic() {
     start();
-
-    //beginPlay();
 }
 
 function stopMusic() {
@@ -154,12 +147,6 @@ function windowResized() {
 function beginPlay() {
     player.start(DRUMS);
 }
-
-//***TEST*** */
-
-
-
-
 
 function draw() {
     //We need to take music data from the melody mixer library and play it within the canvas
@@ -185,26 +172,20 @@ function draw() {
         if (isPlaying) {
             musicWave();
         }
-
-
     } else {
         image(img, 0, 0)
 
         loadBar();
 
     }
-
     if (isChangeable) {
         //potentially change BPM
     }
-
 }
 
 function musicWave() {
-
     calcWave();
     renderWave();
-
 }
 
 function drawHeartRate() {
@@ -259,7 +240,6 @@ function loadBar() {
 }
 
 function createButtons() {
-
     button = createButton('Start Music');
     button.position(phoneLeft + (phoneMiddle - phoneLeft) / 4, 910);
     button.mousePressed(startMusic);
@@ -271,7 +251,6 @@ function createButtons() {
 
 function initializePlayer() {
     const player = new core.Player();
-    //...
     const mvae = new music_vae.MusicVAE('https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small');
     mvae.initialize().then(() => {
         mvae.sample(1).then((samples) => player.start(samples[0]));
@@ -279,7 +258,6 @@ function initializePlayer() {
 }
 
 function SetHeartRate() {
-
     //function to set heartrate to 1-10 based on switch statement
     if (millis() > startT + deltaT) {
         startT = millis()
@@ -290,9 +268,7 @@ function SetHeartRate() {
 
         tempRand = random(-1, 1);
         changeTempo(tempRand);
-
     }
-
 }
 
 function LoadProgram() {
@@ -303,9 +279,7 @@ function LoadProgram() {
         console.log("Loaded"); // do what you have to do!
         loaded = true;
     }
-
 }
-
 function Bpm(x) {
     //x allows us to create a case that isn't a single integer but rather a comparison between numbers.
 
@@ -398,16 +372,13 @@ function Bpm(x) {
         default:
             break;
     }
-
 }
 
 //sine wave derived from https://p5js.org/examples/math-sine-wave.html
 function calcWave() {
     // Increment theta (try different values for
     // 'angular velocity' here)
-
     theta += mappedBPM;
-
     // For every x value, calculate a y value with sine function
     let x = theta;
     for (let i = 0; i < yvalues.length; i++) {
@@ -415,29 +386,12 @@ function calcWave() {
         x += dx;
     }
 }
-
 function renderWave() {
     noStroke();
     fill(0);
     // A simple way to draw the wave with an ellipse at each location
     for (let x = 0; x < yvalues.length; x++) {
         ellipse(x * xspacing + phoneLeft - 3, height / 2 + yvalues[x], 16, 16);
-    }
-}
-
-function DecideSongChange() {
-    //run within switch statement
-
-}
-
-function ChangeSong() {
-
-    //if current song can gracefully change to new song then change, if not - delay
-
-    if (currentBMP = isChangable) {
-        //change song
-    } else {
-        //add delay
     }
 }
 
