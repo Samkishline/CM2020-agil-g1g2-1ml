@@ -8,6 +8,11 @@ let isChangeable = false;
 //temporary heart rate since we don't have an input device.
 let heartRate = 75;
 
+//heart beat variables
+let npoints = 100;
+let radius;
+let percent = 0;
+
 //timer
 let startT, deltaT, startTLoad, deltaTLoad, startLoad;
 
@@ -35,7 +40,9 @@ var img;
 var imgLoaded;
 
 //timer to load and initialize player
-let loaded;
+let loaded = false;
+
+let drawButtonsOnce = true;
 
 const sampleAndPlayForever = () => {
     player.stop();
@@ -96,6 +103,9 @@ function setup() {
 
     //loading bar
     startLoad = millis();
+
+    //hearbeat rad
+    radius = 75;
 }
 
 function startMusic() {
@@ -131,19 +141,26 @@ function draw() {
     if (loaded) {
         image(imgLoaded, 0, 0);
 
-        createButtons();
+        if (drawButtonsOnce)
+        {
+            createButtons();
+            drawButtonsOnce = false;
+        }
+
+        heartBeat();
+
+        SetHeartRate();
     } else {
         image(img, 0, 0)
 
         loadBar();
 
     }
-
     //load buttons to bottom bar on iphone
 
 
     //startup the music
-    SetHeartRate();
+    
 
     if (isChangeable) {
         //potentially change BPM
@@ -154,22 +171,57 @@ function draw() {
 
 }
 
+function heartBeat() {
+    // https://editor.p5js.org/copperfrance/sketches/OOoDzbl89
+    push();
+    translate(phoneLeft + 70, phoneTop + 125);
+    var angle = TWO_PI / npoints;
+    fill(150, 0, 100);
+    stroke(255);
+    strokeWeight(1);
+    beginShape();
+    for (var a = 0; a < TWO_PI; a += angle) {
+        // cardioid
+        let ac = a;
+        let r = (1 - sin(ac)) * 0.4;
+        let cx = cos(ac) * r * radius;
+        let cy = ((sin(ac) * r) + 0.4) * radius;
+
+        // heart 1
+        let ah = PI / 2 - a;
+        let hx = 16 * pow(sin(ah), 3) * radius * 0.06;
+        let hy = (13 * cos(ah) - 7 * cos(2 * ah) - 2 * cos(3 * ah) - cos(4 * ah)) * radius * 0.05;
+
+        let coef = sin(percent * PI);
+        let sx = cx * coef + hx * (1 - coef);
+        let sy = cy * coef + hy * (1 - coef);
+        vertex(sx, -sy);
+    }
+    endShape(CLOSE);
+    pop();
+
+    percent += 0.03;
+    if (percent >= 1) {
+        percent = 0;
+    }
+}
+
 function loadBar() {
     stroke(255, 0, 0);
     strokeWeight(10);
 
-    x = map(millis(), startLoad, startLoad+2000, phoneLeft , phoneRight);
-	line(phoneLeft, 700, x, 700);
+    x = map(millis(), startLoad, startLoad + 2000, phoneLeft, phoneRight);
+    line(phoneLeft, 700, x, 700);
 }
 
 function createButtons() {
 
-    button = createButton('Start Music - (will take a second)');
-    button.position(phoneMiddle - button.width / 2, phoneTop + 10);
+    button = createButton('Start Music');
+    button.position(phoneLeft + (phoneMiddle - phoneLeft) / 4, 910);
     button.mousePressed(startMusic);
 
     button = createButton('Stop Music');
-    button.position(phoneMiddle - button.width / 2, phoneTop + 50);
+    button.position(phoneMiddle + (phoneRight - phoneMiddle) / 4, 910);
     button.mousePressed(stopMusic);
 }
 
@@ -199,7 +251,7 @@ function SetHeartRate() {
 function LoadProgram() {
 
     //function to set heartrate to 1-10 based on switch statement
-    if (millis() > startTLoad + deltaTLoad) {
+    if (millis() > startTLoad + deltaTLoad && loaded == false) {
         startTLoad = millis()
         console.log("it is time for it now Looooad"); // do what you have to do!
         loaded = true;
