@@ -1,3 +1,15 @@
+commit 316efbef8b4000eeb78b88b28e80e6ff95d0ef3d
+Author: Samkishline <Samkishline@gmail.com>
+Date:   Sun Mar 28 21:46:47 2021 -0700
+
+    Final comments & clean up more unused code.
+
+commit 157e37d6df9bdc0e5bd7a741c09a1e448de0c2a0
+Author: Samkishline <Samkishline@gmail.com>
+Date:   Sun Mar 28 21:28:20 2021 -0700
+
+    Added Git Log
+
 commit cc89ec118055007fba78fdd3de670fbf3a03b96b
 Author: Samkishline <Samkishline@gmail.com>
 Date:   Sun Mar 28 21:22:18 2021 -0700
