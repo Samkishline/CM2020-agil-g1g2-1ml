@@ -394,31 +394,3 @@ function renderWave() {
         ellipse(x * xspacing + phoneLeft - 3, height / 2 + yvalues[x], 16, 16);
     }
 }
-
-function keyPressed() {
-    // Changing BPM by arrow keys.
-    // keys are pressed -- 66 = temp
-
-    //detects which key is pressed in a switch statement
-    switch (keyCode) {
-        case 66:
-            break;
-        case 66:
-            break;
-        default:
-            //random key pressed
-            break;
-    }
-}
-
-function keyReleased() {
-    // This probably isn't used
-
-    switch (keyCode) {
-        case 66:
-            //Potentially used later
-            break;
-        default:
-            break;
-    }
-}
