@@ -56,15 +56,17 @@ let mappedBPM = 0.05;
 //timer to load and initialize player
 let loaded = false;
 
+//var to only draw buttons once on screen - this was a bug fix as we were slowing down the draw function by drawing the two buttons within the toolbar every cycle.
 let drawButtonsOnce = true;
 
+//show sine wave if we are playing music
 let isPlaying = false;
 
 const sampleAndPlayForever = () => {
     player.stop();
+    //This could be used as future functionality to show how many times we've played songs.
     count += 1;
-    //display counter
-    //document.getElementById('count').innerHTML = `${count} trios`;
+    //This is code from our player library to begin playing sample music at our specified tempo.
     return model.sample(1)
         .then((samples) => player.start(samples[0], tempo))
         .then(stopSignal ? undefined : sampleAndPlayForever)
@@ -79,14 +81,20 @@ const changeTempo = (delta) => {
 }
 
 const start = () => {
+    //This allows us to start the player
     mm.Player.tone.context.resume(); // Required on mobile.
+
+    //initialze tempo with no delta
     changeTempo(0);
     stopSignal = false;
+    //call function to begin playing AI generated music forever.
     sampleAndPlayForever();
+    //set isPlaying BOOL to true, so that we know to display the sine wave.
     isPlaying = true;
 };
 
 const stop = () => {
+    //This allows us to stop the player
     stopSignal = true;
     player.stop();
     isPlaying = false;
@@ -96,11 +104,9 @@ model.initialize().then(stop);
 
 
 function preload() {
-    //preload
+    //preload our images
     img = loadImage('Assets/imgs/iphone-App-load-Img.jpg')
     imgLoaded = loadImage('Assets/imgs/iphone-App-Img.jpg')
-    //player = new mm.Player();
-
 }
 
 function setup() {
@@ -132,20 +138,19 @@ function setup() {
     yvalues = new Array(floor(w / xspacing));
 }
 
+//start function for starting the music after button click
 function startMusic() {
     start();
 }
 
+//stop function for ending music after button click
 function stopMusic() {
     stop();
 }
 
+//this will resize the window to any size. -25 & 16 to remove scroll bars.
 function windowResized() {
     resizeCanvas(windowWidth - 25, windowHeight - 16);
-}
-
-function beginPlay() {
-    player.start(DRUMS);
 }
 
 function draw() {
@@ -155,6 +160,7 @@ function draw() {
     //create loading image
     LoadProgram();
     if (loaded) {
+        //change loading image to fully loaded image after 2000ms
         image(imgLoaded, 0, 0);
 
         if (drawButtonsOnce) {
@@ -163,16 +169,20 @@ function draw() {
             drawButtonsOnce = false;
         }
 
+        //Here we took boilerplate code for a heartbeat animation and mapped it to our tempo and mimicked heartrate.
         heartBeat();
 
+        //Here we initialize the timer for the mimicked heartrate which also changes the tempo.
         SetHeartRate();
 
+        //draw heartrate on screen.
         drawHeartRate();
 
         if (isPlaying) {
             musicWave();
         }
     } else {
+        //Add a loading bar like there would be in a native iOS Application.
         image(img, 0, 0)
 
         loadBar();
@@ -184,11 +194,13 @@ function draw() {
 }
 
 function musicWave() {
+    //Here we update sine wave in order to show that music is playing, how fast the sing wave is moving is mapped to the tempo.
     calcWave();
     renderWave();
 }
 
 function drawHeartRate() {
+    //We show on screen the current heart rate we are using to map to a BPM for music generation
     push();
     textSize(100);
     fill(0);
@@ -198,6 +210,7 @@ function drawHeartRate() {
 
 function heartBeat() {
     // https://editor.p5js.org/copperfrance/sketches/OOoDzbl89
+    // Here we have code which we've updated to be our on screen heart rate indicator. Once we had a physical device to detect heartrate this function would be mapped to beat to the users exact heart rate.
     push();
     translate(phoneLeft + 70, phoneTop + 125);
     var angle = TWO_PI / npoints;
@@ -225,6 +238,8 @@ function heartBeat() {
     endShape(CLOSE);
     pop();
 
+    //This percent change can actually also be mapped to the switch statement which would make the heart beat on screen go faster or slower.
+    //This would be a future change
     percent += 0.03;
     if (percent >= 1) {
         percent = 0;
@@ -240,6 +255,7 @@ function loadBar() {
 }
 
 function createButtons() {
+    //here we create two buttons one start and one stop which will begin/stop playing our music on the bottom iphone toolbar.
     button = createButton('Start Music');
     button.position(phoneLeft + (phoneMiddle - phoneLeft) / 4, 910);
     button.mousePressed(startMusic);
@@ -250,6 +266,7 @@ function createButtons() {
 }
 
 function initializePlayer() {
+    //initialize music player, utilizing the music vae library.
     const player = new core.Player();
     const mvae = new music_vae.MusicVAE('https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/mel_2bar_small');
     mvae.initialize().then(() => {
@@ -264,9 +281,13 @@ function SetHeartRate() {
         console.log("New Heart Rate"); // do what you have to do!
         isChangeable = true;
 
+        //We need to set deltaT to a random number in Milliseconds in order to mimick a heartrate
         deltaT = random(1500, 5000);
 
+        //This will set the temp to either down 1 or up 1 + a delta to give us a more randomized tempo change which will then be mapped to our BPM within our Bpm switch statement.
         tempRand = random(-1, 1);
+
+        //here we actually call the changeTempo function and give our up or down tempo.
         changeTempo(tempRand);
     }
 }
@@ -285,7 +306,7 @@ function Bpm(x) {
 
     switch (true) {
         case (x >= 40 && x <= 49):
-            //HR - 50-75
+            //HR - 40-49
             console.log("1");
 
             mappedBPM = map(x, 40, 49, 0.05, 0.06);
