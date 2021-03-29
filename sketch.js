@@ -9,8 +9,7 @@ let isChangeable = false;
 let heartRate = 75;
 
 //timer
-let startT;
-let deltaT;
+let startT, deltaT, startTLoad, deltaTLoad, startLoad;
 
 //Initial model initializations
 // Instantiate the model by specifying the desired checkpoint.
@@ -29,32 +28,14 @@ let phoneTop = 82;
 let phoneBottom = 946;
 let phoneLeft = 279 + 12.5;
 let phoneRight = 693 + 12.5;
-let phoneMiddle = ((phoneLeft+phoneRight)/2);
-
-// DRUMS = {
-//     notes: [
-//       {pitch: 60, startTime: 0.0, endTime: 0.5},
-//       {pitch: 60, startTime: 0.5, endTime: 1.0},
-//       {pitch: 67, startTime: 1.0, endTime: 1.5},
-//       {pitch: 67, startTime: 1.5, endTime: 2.0},
-//       {pitch: 69, startTime: 2.0, endTime: 2.5},
-//       {pitch: 69, startTime: 2.5, endTime: 3.0},
-//       {pitch: 67, startTime: 3.0, endTime: 4.0},
-//       {pitch: 65, startTime: 4.0, endTime: 4.5},
-//       {pitch: 65, startTime: 4.5, endTime: 5.0},
-//       {pitch: 64, startTime: 5.0, endTime: 5.5},
-//       {pitch: 64, startTime: 5.5, endTime: 6.0},
-//       {pitch: 62, startTime: 6.0, endTime: 6.5},
-//       {pitch: 62, startTime: 6.5, endTime: 7.0},
-//       {pitch: 60, startTime: 7.0, endTime: 8.0},
-//     ],
-//     totalTime: 8
-//   };
-
-//Test player
+let phoneMiddle = ((phoneLeft + phoneRight) / 2);
 
 //Initialize BG image so we can resize it upon window resize
 var img;
+var imgLoaded;
+
+//timer to load and initialize player
+let loaded;
 
 const sampleAndPlayForever = () => {
     player.stop();
@@ -88,7 +69,8 @@ model.initialize().then(stop);
 
 function preload() {
     //preload
-    img = loadImage('Assets/iPhone-Application-Img.png'); // Load the image
+    img = loadImage('Assets/imgs/iphone-App-load-Img.jpg')
+    imgLoaded = loadImage('Assets/imgs/iphone-App-Img.jpg')
     //player = new mm.Player();
 
 }
@@ -96,23 +78,24 @@ function preload() {
 function setup() {
     //create a canvas for the robot
     //hardcode - numbers to take away scroll bars
-    createCanvas(windowWidth-25, windowHeight-16);
+    createCanvas(windowWidth - 25, windowHeight - 16);
 
-    button = createButton('Start Music - (will take a second)');
-    button.position(phoneMiddle - button.width/2, phoneTop + 10);
-    button.mousePressed(startMusic);
 
-    button = createButton('Stop Music');
-    button.position(phoneMiddle - button.width/2, phoneTop + 50);
-    button.mousePressed(stopMusic);
-    
-    img.resize(1000,1000);
+
+    //img.resize(1000,1000);
 
     //set start time
 
     deltaT = random(1500, 5000);
+    //set Load timer
+    deltaTLoad = 2000;
 
-    startT=millis();
+    //initiate start times
+    startT = millis();
+    startTLoad = millis();
+
+    //loading bar
+    startLoad = millis();
 }
 
 function startMusic() {
@@ -126,7 +109,7 @@ function stopMusic() {
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth-25, windowHeight-16);
+    resizeCanvas(windowWidth - 25, windowHeight - 16);
 }
 
 function beginPlay() {
@@ -137,26 +120,57 @@ function beginPlay() {
 
 
 
-  
+
 
 function draw() {
     //We need to take music data from the melody mixer library and play it within the canvas
     background(255);
 
-    //Make image scale with width of screen
+    //create loading image
+    LoadProgram();
+    if (loaded) {
+        image(imgLoaded, 0, 0);
 
-
+        createButtons();
+    } else {
         image(img, 0, 0)
 
-        SetHeartRate();
-    
-        if (isChangeable) {
-            //potentially change BPM
-        }
+        loadBar();
+
+    }
+
+    //load buttons to bottom bar on iphone
+
+
+    //startup the music
+    SetHeartRate();
+
+    if (isChangeable) {
+        //potentially change BPM
+    }
 
     //    run map function
     //    run Bpm function
 
+}
+
+function loadBar() {
+    stroke(255, 0, 0);
+    strokeWeight(10);
+
+    x = map(millis(), startLoad, startLoad+2000, phoneLeft , phoneRight);
+	line(phoneLeft, 700, x, 700);
+}
+
+function createButtons() {
+
+    button = createButton('Start Music - (will take a second)');
+    button.position(phoneMiddle - button.width / 2, phoneTop + 10);
+    button.mousePressed(startMusic);
+
+    button = createButton('Stop Music');
+    button.position(phoneMiddle - button.width / 2, phoneTop + 50);
+    button.mousePressed(stopMusic);
 }
 
 function initializePlayer() {
@@ -178,6 +192,17 @@ function SetHeartRate() {
 
         deltaT = random(1500, 5000);
 
+    }
+
+}
+
+function LoadProgram() {
+
+    //function to set heartrate to 1-10 based on switch statement
+    if (millis() > startTLoad + deltaTLoad) {
+        startTLoad = millis()
+        console.log("it is time for it now Looooad"); // do what you have to do!
+        loaded = true;
     }
 
 }
