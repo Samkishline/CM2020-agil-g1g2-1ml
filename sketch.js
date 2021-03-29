@@ -141,8 +141,7 @@ function draw() {
     if (loaded) {
         image(imgLoaded, 0, 0);
 
-        if (drawButtonsOnce)
-        {
+        if (drawButtonsOnce) {
             createButtons();
             drawButtonsOnce = false;
         }
@@ -150,6 +149,12 @@ function draw() {
         heartBeat();
 
         SetHeartRate();
+
+        push();
+        textSize(100);
+        fill(0);
+        text(round(tempo), phoneLeft + 210, phoneTop + 160)
+        pop();
     } else {
         image(img, 0, 0)
 
@@ -160,7 +165,7 @@ function draw() {
 
 
     //startup the music
-    
+
 
     if (isChangeable) {
         //potentially change BPM
@@ -169,6 +174,11 @@ function draw() {
     //    run map function
     //    run Bpm function
 
+}
+
+function mapHeartRate() {
+
+    //heartRate = map function
 }
 
 function heartBeat() {
@@ -239,10 +249,13 @@ function SetHeartRate() {
     //function to set heartrate to 1-10 based on switch statement
     if (millis() > startT + deltaT) {
         startT = millis()
-        console.log("it is time for it now"); // do what you have to do!
+        console.log("New Heart Rate"); // do what you have to do!
         isChangeable = true;
 
         deltaT = random(1500, 5000);
+
+        tempRand = random(-1, 1);
+        changeTempo(tempRand);
 
     }
 
@@ -253,7 +266,7 @@ function LoadProgram() {
     //function to set heartrate to 1-10 based on switch statement
     if (millis() > startTLoad + deltaTLoad && loaded == false) {
         startTLoad = millis()
-        console.log("it is time for it now Looooad"); // do what you have to do!
+        console.log("Loaded"); // do what you have to do!
         loaded = true;
     }
 
